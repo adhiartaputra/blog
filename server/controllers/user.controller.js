@@ -1,34 +1,35 @@
-const Article = require('../models/article.model')
+const User = require('../models/user.model')
 
 module.exports = {
 
-  addArticle: (req,res) => {
-    const article = new Article({
-      title : req.body.title,
-      content  : req.body.content
+  addUser: (req,res) => {
+    const user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password 
     })
-    article.save((err, data) => {
+    user.save((err, data) => {
       console.log(data);
       res.status(201).json({
-        newArticle  : data,
-        message     : 'Add article success'
+        newUser: data,
+        message: 'Add user success'
       })
     })
   },
 
-  showArticle: (req,res) => {
-    Article.find()
+  showUser: (req,res) => {
+    User.findById(req.params._id)
     .exec()
     .then(data => {
       res.status(200).json({
-        message: "here's your article list",
-        articles: data
+        message: "here's your profile ",
+        users: data
       })
     })
   },
 
-  updateArticle: (req,res) => {
-    Article.findOneAndUpdate({_id: req.params.id}, {$set: req.body}, {upsert: true}, (err => {
+  updateUser: (req,res) => {
+    User.findOneAndUpdate({_id: req.params._id}, {$set: req.body}, {upsert: true}, (err => {
         if(err) {
             res.status(404).json({
                 message: err
@@ -42,8 +43,8 @@ module.exports = {
     }))
   },
 
-  deleteArticle: (req,res) => {
-    Article.deleteOne({_id: req.headers._id}, (err,r) => {
+  deleteUser: (req,res) => {
+    User.deleteOne({name: req.body.name}, (err,r) => {
       if(err) {
         res.status(404).json({
           message: err

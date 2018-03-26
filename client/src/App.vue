@@ -1,7 +1,11 @@
 <template>
   <div id="app">
-    <navbar></navbar>
+    <navbar :title="title" :content="content" v-on:postblog='getNewArticle'></navbar>
     <!-- <img src="./assets/logo.png"> -->
+    <div class="jumbotron">
+      <h1>{{quote.quote}}</h1>
+      <p>{{quote.author}}</p>
+    </div>
     <router-view :blog="blog"/>
   </div>
 </template>
@@ -10,30 +14,60 @@
 // step 1 import component yang mau di pake
 // step 2 register component yang di import
 import Navbar from '@/components/Navbar'
+import axios from 'axios'
 
 export default {
   name: 'App',
   components: {
     Navbar
   },
+  created () {
+    this.getData()
+    this.getQuote()
+  },
   data () {
     return {
-      blog: [{
-        id: 1,
-        title: "Here's your title",
-        content: 'DESC',
-        comment: 'COMMENT'
-      }, {
-        id: 2,
-        title: "Here's other title",
-        content: 'OTHER DESC',
-        comment: 'OTHER COMMENT'
-      }, {
-        id: 3,
-        title: "Here's other than other title",
-        content: 'OTHER DESC',
-        comment: 'OTHER OTHER COMMENT'
-      }],
+      blog: [],
+      quote: '',
+      title: '',
+      content: ''
+    }
+  },
+  methods: {
+    getNewArticle: function (e) {
+      this.title = e.title
+      this.content = e.content
+      console.log('ini navbar e', e)
+    },
+    getQuote: function () {
+      axios.get('https://quotes.rest/qod', {
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+        .then(({data}) => {
+          console.log(data.contents.quotes[0].quote)
+          this.quote = data.contents.quotes[0]
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getData: function () {
+      console.log('masuk')
+      axios({
+        method: 'get',
+        url: 'http://localhost:3000/blog'
+      })
+        .then(({data}) => {
+          this.blog = data.articles
+          console.log(data)
+          // console.log('masuukkk 2')
+        })
+        .catch(err => {
+          console.log('masuk error')
+          console.log(err)
+        })
     }
   }
 }
@@ -47,5 +81,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
+}
+.jumbotron
+{
+  height: 15rem;
 }
 </style>

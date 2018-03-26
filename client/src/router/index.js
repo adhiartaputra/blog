@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Title from '@/components/Title'
 import Content from '@/components/Content'
+import PostArticle from '@/components/PostArticle'
 
 Vue.use(Router)
 
@@ -11,14 +11,16 @@ export default new Router({
     {
       path: '/',
       component: Title,
-      children: [
-        {
-          path: ':id',
-          name: 'content',
-          component: Content,
-          props: true
-        }
-      ]
+      children: [{
+        path: ':_id',
+        name: 'content',
+        component: Content,
+        props: true
+      }]
+    }, {
+      path: '/create',
+      component: PostArticle,
+      name: 'post_article'
     }
   ]
 })

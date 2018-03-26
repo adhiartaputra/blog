@@ -5,6 +5,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 require('dotenv').config()
+// const cors = require('cors')
 
 const app = express();
 
@@ -33,7 +34,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/article', articles);
+
+app.use('/blog', articles);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

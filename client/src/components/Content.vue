@@ -1,12 +1,11 @@
 <template>
-  <div class="container my-3">
-    <div class="row">
-      <div class="col-sm-6 offset-sm-3">
-        <ul class="list-group">
-          <li class="list-group-item">
-            {{detailBlog.content}}
-          </li>
-        </ul>
+  <div class="col-sm-7">
+      <div class="card">
+        <div class="card-header bg-dark">
+          <h5>{{detailBlog.title}}</h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{detailBlog.content}}</p>
       </div>
     </div>
   </div>
@@ -15,36 +14,29 @@
 <script>
 
 export default {
-  props: ['id'],
+  props: ['_id', 'blog'],
   data () {
     return {
-      data: [],
-      detailBlog: null,
-      blogsss: [{
-        id: 1,
-        title: "Here's your title",
-        content: 'DESC',
-        comment: 'COMMENT'
-      }, {
-        id: 2,
-        title: "Here's other title",
-        content: `OTHER DESC
-        AND OTHER AND OTHER AND ENTER
-        THIS IS AFTER ENTER`,
-        comment: 'OTHER COMMENT'
-      }, {
-        id: 3,
-        title: "Here's other than other title",
-        content: 'OTHER OTHER DESC',
-        comment: 'OTHER OTHER COMMENT'
-      }]
+      detailBlog: null
     }
   },
+  methods: {
+    // getContent: function () {
+    //   this.blog.map((v, c) => {
+    //     if (v._id === this._id) {
+    //       return 'true'
+    //     } else {
+    //       return 'false'
+    //     }
+    //   })
+    // }
+  },
   watch: {
-    id () {
+    immediate: true,
+    _id () {
       let self = this
-      self.blogsss.map((v,c) => {
-        if (v.id === +this.id) {
+      self.blog.map((v, c) => {
+        if (v._id === self._id) {
           self.detailBlog = v
         }
       })
@@ -54,5 +46,15 @@ export default {
 </script>
 
 <style>
+
+div.card-body
+{
+  text-align: justify;
+}
+
+.card-header
+{
+  color: whitesmoke;
+}
 
 </style>
