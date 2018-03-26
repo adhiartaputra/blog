@@ -27,19 +27,30 @@ module.exports = {
     })
   },
 
+  findById: (req,res) => {
+    Article.findById(req.headers._id)
+    .exec()
+    .then(data => {
+      res.status(200).json({
+        message: 'here \'s your Article',
+        data
+      })
+    })
+  },
+
   updateArticle: (req,res) => {
-    Article.findOneAndUpdate({_id: req.params.id}, {$set: req.body}, {upsert: true}, (err => {
-        if(err) {
-            res.status(404).json({
-                message: err
-            })
-        } else {
-            res.status(201).json({
-                message: "update data success",
-                data: req.body
-            })
-        }
-    }))
+    Article.findOneAndUpdate({_id: req.headers._id}, {$set: req.body}, {new: true}, (err, data) => {
+      if(err) {
+        res.status(404).json({
+          message: err
+        })
+      } else {
+        res.status(201).json({
+          message: 'here \'s your data',
+          data
+        })
+      }
+    })
   },
 
   deleteArticle: (req,res) => {

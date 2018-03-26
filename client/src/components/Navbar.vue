@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import PostArticle from '@/components/PostArticle'
 
 export default {
@@ -62,22 +61,8 @@ export default {
   },
   methods: {
     getNewArticle: function (e) {
+      console.log(e, 'ini di navbar')
       this.$emit('postblog', e)
-    },
-    postBlog () {
-      axios.post('http://localhost:3000/blog', {
-        data: {
-          title: this.title,
-          content: this.content
-        }
-      })
-        .then(data => {
-          console.log(data)
-          this.$router.push('/')
-        })
-        .catch(err => {
-          console.log(err)
-        })
     }
   }
 }

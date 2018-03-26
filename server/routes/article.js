@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { addArticle, showArticle, updateArticle, deleteArticle } = require('../controllers/article.controller')
+const { addArticle, showArticle, updateArticle, deleteArticle, findById } = require('../controllers/article.controller')
 
 /* GET users listing. */
 router
 .post('/', addArticle)
 .get('/', showArticle)
-.put('/:_id', updateArticle)
+.put('/', updateArticle)
+.get('/find', findById)
 .delete('/', deleteArticle)
 
 module.exports = router;

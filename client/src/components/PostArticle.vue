@@ -9,16 +9,16 @@
           </button>
         </div>
         <div class="modal-body">
-            <form>
-                <div class="form-group">
-                  <label for="recipient-name" class="col-form-label">Title:</label>
-                  <input type="text" class="form-control" id="title" v-model='title' required>
-                </div>
-                <div class="form-group">
-                  <label for="message-text" class="col-form-label">Description:</label>
-                  <textarea class="form-control" id="content" v-model='content' required></textarea>
-                </div>
-              </form>
+          <form>
+              <div class="form-group">
+                <label for="title" class="col-form-label">Title:</label>
+                <input type="text" class="form-control" id="title" v-model='title' @input='newArticle' required>
+              </div>
+              <div class="form-group">
+                <label for="content" class="col-form-label">Description:</label>
+                <textarea class="form-control" id="content" v-model='content' @input='newArticle' required></textarea>
+              </div>
+            </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
@@ -31,27 +31,67 @@
 
 <script>
 import axios from 'axios'
+import swal from 'sweetalert2'
 export default {
   name: 'Post_Article',
   data () {
     return {
       title: null,
-      content: null
+      content: null,
+      newBlog: []
     }
   },
+  created () {
+    this.getData()
+  },
   methods: {
-    postBlog: function () {
-      axios.post('http://localhost:3000/blog', {
-        title: this.title,
-        content: this.content
+    getData: function () {
+      let self = this
+      axios({
+        method: 'get',
+        url: 'http://localhost:3000/blog'
       })
-        .then(data => {
-          // console.log(data)
-          this.$router.push('/')
+        .then(({data}) => {
+          // console.log(self.newBlog, 'get data before')
+          self.newBblog = data.articles
+          // console.log(self.newBlog, 'get data After')
         })
         .catch(err => {
           console.log(err)
         })
+    },
+    postBlog: function () {
+      swal({
+        title: 'Are you sure?',
+        text: 'This article will be read by millions people in the world',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!'
+      }).then((result) => {
+        if (result.value) {
+          swal(
+            'Posted!',
+            'Your Article has been posted.',
+            'success'
+          )
+          let self = this
+          axios.post('http://localhost:3000/blog', {
+            title: this.title,
+            content: this.content
+          })
+            .then(data => {
+              // console.log(data)
+              self.newBblog.push(data)
+              self.getData()
+              this.$router.push('/')
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+      })
     },
     newArticle: function (obj) {
       console.log(obj)

@@ -37,7 +37,7 @@ export default {
     getNewArticle: function (e) {
       this.title = e.title
       this.content = e.content
-      console.log('ini navbar e', e)
+      console.log('ini APP vue', e)
     },
     getQuote: function () {
       axios.get('https://quotes.rest/qod', {
@@ -46,7 +46,6 @@ export default {
         }
       })
         .then(({data}) => {
-          console.log(data.contents.quotes[0].quote)
           this.quote = data.contents.quotes[0]
         })
         .catch(err => {
@@ -54,7 +53,6 @@ export default {
         })
     },
     getData: function () {
-      console.log('masuk')
       axios({
         method: 'get',
         url: 'http://localhost:3000/blog'
