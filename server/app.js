@@ -10,7 +10,9 @@ const cors = require('cors')
 const app = express();
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/blog', (err => {
+const pass = process.env.PASSWORD
+const dbUrl = `mongodb://just-to-do-it:${pass}@just-to-do-it-shard-00-00-grhoo.mongodb.net:27017,just-to-do-it-shard-00-01-grhoo.mongodb.net:27017,just-to-do-it-shard-00-02-grhoo.mongodb.net:27017/test?ssl=true&replicaSet=just-to-do-it-shard-0&authSource=admin`
+mongoose.connect(dbUrl, (err => {
   if(err) {
     console.log('failed to connect to database');
   } else {
@@ -18,8 +20,8 @@ mongoose.connect('mongodb://localhost:27017/blog', (err => {
   }
 }));
 
-const index = require('./routes/index');
 const articles = require('./routes/article');
+const user = require('./routes/user');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,9 +36,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 
-app.use('/', index);
-
 app.use('/blog', articles);
+app.use('/user', user );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -8,7 +8,6 @@ module.exports = {
       content  : req.body.content
     })
     article.save((err, data) => {
-      console.log(data);
       res.status(201).json({
         newArticle  : data,
         message     : 'Add article success'

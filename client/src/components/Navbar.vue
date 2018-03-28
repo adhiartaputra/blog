@@ -34,7 +34,7 @@
                 <a class="dropdown-item" href="#">Profile</a>
                 <a class="dropdown-item" href="#">Other</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" style="background-color:red;" >Logout</a>
+                <a class="dropdown-item" style="background-color:red;" @click='logout'>Logout</a>
               </div>
           </li>
         </ul>
@@ -63,6 +63,10 @@ export default {
     getNewArticle: function (e) {
       console.log(e, 'ini di navbar')
       this.$emit('postblog', e)
+    },
+    logout: function () {
+      localStorage.clear()
+      this.$router.push('/login')
     }
   }
 }

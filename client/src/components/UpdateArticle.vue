@@ -12,17 +12,17 @@
             <form>
                 <div class="form-group">
                   <label for="title" class="col-form-label">Title:</label>
-                  <input type="text" class="form-control" id="title" v-model='title' required>
+                  <input type="text" class="form-control" id="title" v-model='edit.title' value='edit.title' required>
                 </div>
                 <div class="form-group">
                   <label for="content" class="col-form-label">Description:</label>
-                  <textarea class="form-control" id="content" v-model='content' required></textarea>
+                  <textarea class="form-control" id="content" v-model='edit.content' value='edit.content' required></textarea>
                 </div>
               </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-outline-info" data-dismiss="modal" @click="updateArticle">Update</button>
+          <button type="button" class="btn btn-outline-info" data-dismiss="modal" @click="update(edit)">Update</button>
         </div>
       </div>
     </div>
@@ -33,32 +33,31 @@
 import axios from 'axios'
 export default {
   name: 'Update_Article',
-  props: ['article'],
+  props: ['edit'],
   data () {
     return {
       title: this.article.title,
       content: this.article.content,
       newtitle: '',
-      newContent: ''
+      newContent: '',
+      url: 'http://localhost:3000/blog'
     }
   },
   methods: {
-    updateArticle: function () {
-      console.log(this.article._id, 'ID')
-      console.log(this.article, 'Article')
-      console.log(this.title, 'TITLE')
-      console.log(this.content, 'CONTENT')
-      axios.put({
-        method: 'put',
-        url: 'http://localhost:3000/blog',
-        headers: this.article._id,
-        data: {
-          title: this.title,
-          content: this.content
+    update: function (article) {
+      console.log(article)
+      axios.put('http://localhost:3000/blog', {
+        title: article.title,
+        content: article.content
+      }, {
+        headers: {
+          token: this.token,
+          _id: article._id
         }
       })
-        .then()
-        .catch()
+        .then(data => {
+          console.log(data)
+        })
     }
   }
 
